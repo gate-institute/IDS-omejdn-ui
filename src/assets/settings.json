@@ -1,5 +1,5 @@
 {
-  "apiUrl": "http://localhost:4567/api/v1",
-  "oidcIssuer": "http://localhost:4567",
+  "apiUrl": "http://omejdn-server.public.test/api/v1",
+  "oidcIssuer": "http://omejdn-server.public.test",
   "clientId": "adminUI"
 }

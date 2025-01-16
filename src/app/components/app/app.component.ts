@@ -35,6 +35,7 @@ export class AppComponent {
         responseType: 'code',
         scope: 'openid omejdn:read omejdn:write omejdn:admin',
         showDebugInformation: true,
+        requireHttps: false,
       });
       this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
         if (this.getId() != null) {

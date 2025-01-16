@@ -1,30 +1,22 @@
 # ----- BUILD STAGE -----
-FROM node AS build
-
+FROM node:18-slim AS builder
 # Temporarily necessary, see https://github.com/webpack/webpack/issues/14532
 ARG NODE_OPTIONS=--openssl-legacy-provider
-
 WORKDIR /app
-
-# Rebuild everything if those files change
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm ci
 RUN npm install -g @angular/cli
 
-COPY ./angular.json angular.json
-COPY ./browserslist browserslist
-COPY ./*.json ./
+COPY *.json browserslist ./
 COPY ./src src
 RUN ng build --configuration production
 
-# ----- REGISTRY IMAGE -----
-FROM nginx
+FROM nginx:1.27
 
 WORKDIR /opt
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY ./docker-entrypoint.sh .
-COPY --from=build /app/dist/ui/* ./
+COPY --from=builder /app/dist/ui/* ./
 COPY ./src/assets ./assets
 
 ENV CLIENT_ID=adminUI
