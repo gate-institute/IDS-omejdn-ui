@@ -1,5 +1,5 @@
 # ----- BUILD STAGE -----
-FROM node:18-slim AS builder
+FROM node:18-alpine AS builder
 # Temporarily necessary, see https://github.com/webpack/webpack/issues/14532
 ARG NODE_OPTIONS=--openssl-legacy-provider
 WORKDIR /app
@@ -9,7 +9,7 @@ RUN npm install -g @angular/cli
 
 COPY *.json browserslist ./
 COPY ./src src
-RUN ng build --configuration production
+RUN ng build --configuration production --optimization=false
 
 FROM nginx:1.27
 
